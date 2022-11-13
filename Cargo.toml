@@ -1,5 +1,5 @@
 [package]
-name = "opa-wrapper"
+name = "sawi-opa-wrapper"
 version = "0.1.0"
 edition = "2021"
 
