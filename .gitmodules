@@ -1,0 +1,3 @@
+[submodule "opa-wasm"]
+	path = opa-wasm
+	url = https://github.com/matrix-org/rust-opa-wasm
