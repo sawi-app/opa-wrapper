@@ -1,14 +1,16 @@
 [package]
 name = "sawi-opa-wrapper"
 version = "0.1.0"
+authors = ["Mohamed Dardouri <med@dardouri.com>"]
+license = "Apache-2.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-anyhow = "1"
-wasmtime = "2"
-opa-wasm = { git = "https://github.com/matrix-org/rust-opa-wasm", features = [ "loader" ] }
-tokio = {version = "1", features = [ "fs", "rt", "net" ] }
-serde = { version = "1", features = ["derive"] }
-serde_json = "1"
+anyhow = "1.0"
+wasmtime = "2.0"
+opa-wasm = { git = "https://github.com/matrix-org/rust-opa-wasm", version = "0.1", features = [ "loader" ] }
+tokio = { version = "1.21", features = [ "fs", "rt", "net" ] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
