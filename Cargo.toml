@@ -9,7 +9,7 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0"
-wasmtime = "2.0"
+wasmtime = "3.0"
 opa-wasm = { path = "./opa-wasm", version = "0.1", features = [ "loader" ] }
 tokio = { version = "1.21", features = [ "fs", "rt", "net" ] }
 serde = { version = "1.0", features = ["derive"] }

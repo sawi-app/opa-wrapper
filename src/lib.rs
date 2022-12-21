@@ -86,10 +86,9 @@ impl OPAModule {
         opa_wasm::read_bundle(path).await
     }
 
-    pub async fn build_policy<V, R>(&self, data: Option<&V>) -> Result<OPAPolicy>
+    pub async fn build_policy<D>(&self, data: Option<&D>) -> Result<OPAPolicy>
     where
-        V: serde::Serialize,
-        R: for<'de> serde::Deserialize<'de>,
+        D: serde::Serialize,
     {
         // Create a store which will hold the module instance
         let mut store = Store::new(&self.engine, ());
@@ -106,12 +105,13 @@ impl OPAModule {
         })
     }
 
-    pub async fn eval<V, R>(&self, data: Option<&V>, entrypoint: &str, input: &V) -> Result<R>
+    pub async fn eval<D, V, R>(&self, data: Option<&D>, entrypoint: &str, input: &V) -> Result<R>
     where
+        D: serde::Serialize,
         V: serde::Serialize,
         R: for<'de> serde::Deserialize<'de>,
     {
-        self.build_policy::<V, R>(data).await?
+        self.build_policy::<D>(data).await?
             .eval(entrypoint, input)
             .await
     }
@@ -130,7 +130,7 @@ mod tests {
             .unwrap();
 
         assert_eq!(
-            opa.build_policy::<_, Value>(Some(&json!({"world": "world"})),)
+            opa.build_policy::<Value>(Some(&json!({"world": "world"})),)
                 .await
                 .unwrap()
                 .eval::<_, Value>("example/hello", &json!({"message": "world"}))
@@ -140,7 +140,7 @@ mod tests {
         );
 
         assert_eq!(
-            opa.eval::<_, Value>(
+            opa.eval::<_, _, Value>(
                 Some(&json!({"world": "world"})),
                 "example/hello",
                 &json!({"message": "worlds"}),
@@ -158,7 +158,7 @@ mod tests {
             .unwrap();
 
         assert_eq!(
-            opa.build_policy::<_, Value>(Some(&json!({"world": "world"})),)
+            opa.build_policy::<Value>(Some(&json!({"world": "world"})),)
                 .await
                 .unwrap()
                 .eval::<_, Value>("example/hello", &json!({"message": "world"}))
@@ -168,7 +168,7 @@ mod tests {
         );
 
         assert_eq!(
-            opa.eval::<_, Value>(
+            opa.eval::<_, _, Value>(
                 Some(&json!({"world": "world"})),
                 "example/hello",
                 &json!({"message": "worlds"}),
